@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>20250224</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台幣轉英鎊轉換器</title>
+</head>
+<body>
+    <h1>台幣轉英鎊轉換器</h1>
+    <label for="twdAmount">新台幣金額：</label>
+    <input type="number" id="twdAmount" placeholder="輸入新台幣金額">
+    <br><br>
+    <button onclick="convertCurrency()">轉換</button>
+    <h2>結果：<span id="result"></span></h2>
+
+    <script>
+        async function getExchangeRate() {
+            const response = await fetch('https://api.exchangerate-api.com/v4/latest/TWD');
+            const data = await response.json();
+            return data.rates.GBP;
+        }
+
+        async function convertCurrency() {
+            // 取得使用者輸入的金額
+            let twdAmount = parseFloat(document.getElementById('twdAmount').value);
+            
+            // 檢查輸入的金額是否有效
+            if (isNaN(twdAmount) || twdAmount < 0) {
+                alert('請輸入有效的金額');
+                return;
+            }
+
+            // 取得最新匯率
+            let exchangeRate = await getExchangeRate();
+
+            // 計算轉換結果
+            let gbpAmount = twdAmount * exchangeRate;
+            
+            // 顯示轉換結果
+            document.getElementById('result').innerText = gbpAmount.toFixed(2) + ' 英鎊';
+        }
+    </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
